@@ -1,15 +1,19 @@
 import pandas as pd
 from flask import Flask, render_template, request
 import yfinance as yf
-app = Flask(__name__)
 from datetime import datetime
 import traceback
 import pprint
+
+##### CONSTANTS ######
 DATE_FORMAT = "%Y-%m-%d"
 NASDAQ_LISTED = 'nasdaq_listed.psv'
 OTHER_LISTED = 'other_listed.psv'
 
+##### INIT FLASK APP #####
+app = Flask(__name__)
 
+##### HELPER FUNCTIONS #####
 def fetch_symbols(file):
     """
     Fetch a list of all of the US Symbols - note this was downloaded from:
@@ -56,13 +60,24 @@ def ticker_returns_matrix(
     print(data)
     return data[['Date','Returns']]
 
+def validate_dates(start_date, end_date):
+    try:
+        start = datetime.strptime(start_date, DATE_FORMAT)
+        end = datetime.strptime(end_date, DATE_FORMAT)
+        if end < start:
+            raise Exception(f'Start date: {start_date} is greater than end date: {end}')
+    except ValueError as e:
+        raise e
+    return True
 
-
+##### HOME PAGE #####
 @app.route("/")
 def index():
     return render_template('index.html')
 
-@app.route("/tickers")
+##### ENDPOINTS #####
+
+@app.route("/tickers", methods = ['GET'])
 def tickers():
     """
     Return list of valid Tickers that the API supports
@@ -70,8 +85,7 @@ def tickers():
     """
     return us_symbols
 
-
-@app.route("/returns/<ticker>/<start_date>/<end_date>", methods =['GET'])
+@app.route("/returns/<ticker>/<start_date>/<end_date>", methods = ['GET'])
 def returns(ticker, start_date, end_date):
     """
     Returns a time series of the daily returns for the specified ticker and time horizon
@@ -134,16 +148,6 @@ def correlation_matrix():
         }
     pprint.pprint(correlation_json)
     return correlation_json
-
-def validate_dates(start_date, end_date):
-    try:
-        start = datetime.strptime(start_date, DATE_FORMAT)
-        end = datetime.strptime(end_date, DATE_FORMAT)
-        if end < start:
-            raise Exception(f'Start date: {start_date} is greater than end date: {end}')
-    except ValueError as e:
-        raise e
-    return True
 
 def start():
     app.run(host='0.0.0.0', port=8002)
