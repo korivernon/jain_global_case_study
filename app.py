@@ -81,9 +81,13 @@ def validate_dates(start_date, end_date):
 def return_error(url: str,exception: Exception, msg: str=''):
     return {
         'url': url,
-        'exception': exception,
         'message': msg
     }
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+  return render_template('404.html'), 404
 
 ##### HOME PAGE #####
 @app.route("/")
