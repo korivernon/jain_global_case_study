@@ -14,7 +14,8 @@ Objective: Develop a REST API that fetches, processes, and serves data relevant 
 
 
 2. Assumptions Made
-   1. There were a few assumptions made: first, I assumed that the start_date, and end_date would be passed into correlation matrix POST. This is because we need a time period in order to calculate the correlation for a given time series. 
+   1. Date would be in the format: `%Y-%m-%d`
+   2. There were a few assumptions made: first, I assumed that the start_date, and end_date would be passed into correlation matrix POST. This is because we need a time period in order to calculate the correlation for a given time series. 
    2. The next assumption I made was that we should expect the historical time periods to be the same across stocks. For example, we wouldn't be able to compare CAVA to Chipotle before CAVA's listing date because it doesn't have historical data. 
 
 

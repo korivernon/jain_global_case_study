@@ -76,7 +76,6 @@ def index():
     return render_template('index.html')
 
 ##### ENDPOINTS #####
-
 @app.route("/tickers", methods = ['GET'])
 def tickers():
     """
@@ -109,6 +108,8 @@ def correlation(ticker1, ticker2, start_date, end_date):
     # after we validate dates we want to get the returns
     returns_ticker_1 = ticker_returns_matrix(ticker1, start_date, end_date)
     returns_ticker_2 = ticker_returns_matrix(ticker2, start_date, end_date)
+    if returns_ticker_2.shape[0] != returns_ticker_1.shape[0]:
+        raise Exception('Please enter in tickers that have the same amount of historical data.')
     correlation = returns_ticker_1['Returns'].corr(returns_ticker_2['Returns'], method='pearson')
     correlation_coefficient_json = {
         'correlation_coefficient': correlation,
