@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jain Clobal Case Study - Software Engineering</title>
+</head>
+<body>
+  <h1>Jain Global Case Study</h1>
+<p>Jain Global: Software Engineering Case Study - Returns API</p>
+  <h2>Endpoints</h2>
+  <ul>
+    <li><a href="#tickers">GET /tickers</a></li>
+    <li><a href="#returns">GET /returns/</a></li>
+    <li><a href="#correlation">GET /correlation</a></li>
+    <li><a href="#correlation_matrix/">POST /correlation_matrix/</a></li>
+  </ul>
+
+  <h2 id="tickers">GET <a href="/tickers" target="_blank">/tickers</a></h2>
+  <p>This endpoint returns a list of all of the tickers that the API supports. Note that this ticker data was pulled from an external yfinance source:
+      <a href="https://ftp.nasdaqtrader.com/Trader.aspx?id=symbollookup" target="_blank">https://ftp.nasdaqtrader.com/Trader.aspx?id=symbollookup</a></p>
+
+  <h3>Request</h3>
+  <p>There is no request body for this endpoint.</p>
+
+  <h3>Response</h3>
+  <p>The response is a JSON array of options symbols with positive dte.</p>
+
+  <pre>
+[
+    "AACG",
+    "AACI",
+    "AACIU",
+    "AACIW",
+      ...,
+    "ZXIET"
+]
+
+</pre>
+
+  <h2 id="returns">GET <a href="/returns" target="_blank">/returns</a></h2>
+  <p>Returns a time series of the daily returns for the specified ticker and time horizon.</p>
+
+  <h3>Request</h3>
+  <p>There is no request body for this endpoint.</p>
+
+  <h3>Response</h3>
+  <p>The response is a JSON array of daily returns formatted as a float.</p>
+
+  <pre>
+[
+    {
+        "Date": "2024-04-04",
+        "Returns": -1.4699859619140625
+    },
+    {
+        "Date": "2024-04-05",
+        "Returns": -0.0099945068359375
+    },
+    ...,
+    {
+        "Date": "2024-05-21",
+        "Returns": 1.260009765625
+    }
+]
+</pre>
+
+  <h2 id="correlation">GET <a href="/correlation" target="_blank">/correlation</a></h2>
+  <p>Returns the Pearson correlation coefficient between the daily return time series for the two provided tickers.</p>
+
+  <h3>Request</h3>
+  <p>There is no request body for this endpoint.</p>
+
+  <h3>Response</h3>
+  <p>The response is a JSON response with correlation_coefficient, which denotes the correlation coefficient, as well as the two tickers that were used. ticker_1 denotes ticker 1 and ticker_2 denotes ticker 2.</p>
+
+  <pre>
+{
+    "correlation_coefficient": 0.2582843917821114,
+    "ticker_1": "aapl",
+    "ticker_2": "tsla"
+}
+
+</pre>
+  <h2 id="correlation_matrix">POST <a href="/correlation_matrix/" target="_blank">/correlation_matrix</a></h2>
+  <p>Get the latest volatility analysis for a given symbol. If no symbol is specified, the latest volatility analysis will be provided.</p>
+
+  <h3>Request</h3>
+  <pre>
+{
+    "start_date": "2024-04-04",
+    "end_date": "2024-05-22",
+    "tickers": [
+        "TSLA",
+        "AAPL",
+        "RIVN"
+    ]
+}
+</pre>
+
+  <h3>Response</h3>
+  <p>The response is a JSON response with the correlation matrix.</p>
+
+  <pre>
+{
+    "correlation_matrix": {
+        "AAPL": {
+            "AAPL": 1.0,
+            "RIVN": -0.11900436280611904,
+            "TSLA": 0.2582843917821113
+        },
+        "RIVN": {
+            "AAPL": -0.11900436280611904,
+            "RIVN": 1.0,
+            "TSLA": 0.3365588296531417
+        },
+        "TSLA": {
+            "AAPL": 0.2582843917821113,
+            "RIVN": 0.3365588296531417,
+            "TSLA": 1.0
+        }
+    },
+    "tickers": [
+        "TSLA",
+        "AAPL",
+        "RIVN"
+    ]
+}
+</pre>
+
+</body>
+</html>
