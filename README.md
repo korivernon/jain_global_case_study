@@ -37,6 +37,14 @@ Objective: Develop a REST API that fetches, processes, and serves data relevant 
       1. For example, if Ticker 1 is highly correlated with Ticker 2 on T-1, but T-0 the volatility is not correlated at all, it could forecast a potential move in Ticker 2 (however, this does not imply direction).
    2. User interface
 
+
+
+7. Self-Assessmemt
+   1. Time: Given the time allotted, I completed in around 1 hour 45 mins. The rest of the time was spent "cleaning up". In that aspect, I would say 8/10. 
+   2. Code Cleanliness: 8/10. I have stuck to PEP8 code guidlines. There probably could be better segmentation of the application - placing helper functions in different files.
+   3. Quantitative: 5/10 - I used built in functions to pandas to calculate pearsons coefficient. Because pre-existing packages were used, I would put this lower. Not much quantitative thought.
+   4. Deliverable: 8/10 - I believe this work is reflective of what I'm able to produce. I would love to extend if given enough time and free reign.
+
 ## Endpoints
 -  GET /tickers
 -  GET /returns/
